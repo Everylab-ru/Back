@@ -13,16 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install SSH key
-        uses: webfactory/ssh-agent@v0.5.3
+      - name: Install SSH client
+        run: sudo apt-get install -y sshpass
 
       - name: Deploy to Server
         env:
           SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-          run: |
-            sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no root@89.169.38.6 << 'EOF'
         run: |
-          ssh -o StrictHostKeyChecking=no root@89.169.38.6 << 'EOF'
+            sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no root@89.169.38.6 << 'EOF'
             cd ~/everylab/Back
             git pull origin dev
             mvn clean package
