@@ -26,5 +26,5 @@ jobs:
           mvn clean package
           cd ~/everylab/Server
           git pull origin main
-          docker-compose up -d
+          docker-compose up -d --build
           EOF
