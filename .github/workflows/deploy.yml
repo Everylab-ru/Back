@@ -27,4 +27,5 @@ jobs:
           cd ~/everylab/Server
           git pull origin main
           docker-compose up -d --build
+          docker system prune -f
           EOF
