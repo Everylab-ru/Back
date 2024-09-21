@@ -18,3 +18,10 @@ application:
       secret: ${JWT_SECRET_KEY}
       access: ${ACCESS_TOKEN_EXPIRATION}
       refresh: ${REFRESH_TOKEN_EXPIRATION}
+
+springdoc:
+  override-with-generic-response: false
+  swagger-ui:
+    path: /api/v1/swagger-ui
+  api-docs:
+    path: /api/v1/docs
