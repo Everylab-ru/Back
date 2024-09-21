@@ -3,7 +3,7 @@ FROM maven:3.9.5-eclipse-temurin-21-alpine as build
 WORKDIR /app
 
 COPY target/Everylab-0.0.1-SNAPSHOT.jar /app/Everylab-0.0.1-SNAPSHOT.jar
-COPY .env /app/.env
+COPY ./.env /app/.env
 
 RUN java -Djarmode=layertools -jar Everylab-0.0.1-SNAPSHOT.jar extract
 
