@@ -1,14 +1,16 @@
 package ru.webapp.everylab.entity.user;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import ru.webapp.everylab.entity.Role;
+import lombok.*;
+import ru.webapp.everylab.entity.role.Role;
 
 @Entity
-@Table(name = "userRoles")
+@Table(name = "user_roles")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRole {
 
     @EmbeddedId
@@ -16,11 +18,11 @@ public class UserRole {
 
     @ManyToOne
     @MapsId("usersId")
-    @JoinColumn(name = "usersId")
+    @JoinColumn(name = "users_id")
     private User user;
 
     @ManyToOne
-    @MapsId("usersId")
-    @JoinColumn(name = "usersId")
+    @MapsId("rolesId")
+    @JoinColumn(name = "roles_id")
     private Role role;
 }

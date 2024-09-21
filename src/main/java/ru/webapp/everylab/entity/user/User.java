@@ -1,9 +1,9 @@
 package ru.webapp.everylab.entity.user;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
-import ru.webapp.everylab.entity.Role;
+import ru.webapp.everylab.entity.role.Role;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +12,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class User {
     @Id
     @UuidGenerator
@@ -26,12 +29,11 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Transient
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "userRoles",
-            joinColumns = @JoinColumn(name = "usersId"),
-            inverseJoinColumns = @JoinColumn(name = "rolesId")
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id")
     )
     private Set<Role> roles = new HashSet<>();
 }

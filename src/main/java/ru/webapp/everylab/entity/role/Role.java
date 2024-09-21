@@ -1,4 +1,4 @@
-package ru.webapp.everylab.entity;
+package ru.webapp.everylab.entity.role;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,10 +16,10 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String name;
+    private RoleName name;
 
-    @Transient
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
 }
