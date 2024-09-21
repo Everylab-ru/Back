@@ -10,6 +10,8 @@ import ru.webapp.everylab.repository.UserRepository;
 
 import java.util.UUID;
 
+import static ru.webapp.everylab.error.ErrorMessages.USER_NOT_FOUND_MESSAGE;
+
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -20,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String uuid) throws UsernameNotFoundException {
         return new SecurityUser(
                 userRepository.findById(UUID.fromString(uuid))
-                        .orElseThrow()
+                        .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, uuid)))
         );
     }
 }

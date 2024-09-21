@@ -1,7 +1,7 @@
 package ru.webapp.everylab.service;
 
-import ru.webapp.everylab.entity.user.User;
+import ru.webapp.everylab.dto.user.UserRequest;
 
 public interface RegistrationService {
-    String[] register(User user);
+    String[] register(UserRequest request);
 }

@@ -12,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserRoleId implements Serializable {
 
     private UUID usersId;
