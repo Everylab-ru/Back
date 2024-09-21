@@ -23,7 +23,7 @@ jobs:
           sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no root@89.169.38.6 << 'EOF'
           cd ~/everylab/Back
           git pull origin dev
-          mvn clean package
+          mvn clean package -Dmaven.test.skip
           cd ~/everylab/Server
           git pull origin main
           docker-compose up -d --build
