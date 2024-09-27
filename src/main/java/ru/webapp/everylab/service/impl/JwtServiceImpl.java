@@ -5,7 +5,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.webapp.everylab.service.JwtService;
@@ -22,6 +24,18 @@ import java.util.function.Function;
 public class JwtServiceImpl implements JwtService {
 
     private final JwtProperties jwtProperties;
+
+    @Override
+    public String extractTokenFromRequest(HttpServletRequest request) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = "";
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+
+        return token;
+    }
 
     @Override
     public String extractUserIdFromToken(String token) {

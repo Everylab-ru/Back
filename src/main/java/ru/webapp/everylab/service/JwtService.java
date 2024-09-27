@@ -1,12 +1,15 @@
 package ru.webapp.everylab.service;
 
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Map;
 import java.util.function.Function;
 
 public interface JwtService {
+    String extractTokenFromRequest(HttpServletRequest request);
+
     String extractUserIdFromToken(String token);
 
     <T> T extractClaims(String token, Function<Claims, T> claimsResolver);

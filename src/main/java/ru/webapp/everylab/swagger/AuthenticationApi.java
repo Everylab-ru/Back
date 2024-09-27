@@ -21,13 +21,15 @@ public interface AuthenticationApi {
 
     @Operation(summary = "Register user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User registered successfully", content = @Content(schema = @Schema(implementation = AuthenticationResponse.class))),
+            @ApiResponse(responseCode = "201", description = "User registered successfully",
+                    content = @Content(schema = @Schema(implementation = AuthenticationResponse.class))),
     })
     AuthenticationResponse register(@RequestBody @Valid UserRequest request, HttpServletResponse response);
 
     @Operation(summary = "Authenticate user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User logged in successfully", content = @Content(schema = @Schema(implementation = AuthenticationResponse.class)))
+            @ApiResponse(responseCode = "200", description = "User logged in successfully",
+                    content = @Content(schema = @Schema(implementation = AuthenticationResponse.class)))
     })
     AuthenticationResponse authenticate(@RequestBody @Valid AuthenticationRequest authenticationRequest, HttpServletResponse response);
 
@@ -36,4 +38,10 @@ public interface AuthenticationApi {
             @ApiResponse(responseCode = "200", description = "Token refreshed successfully")
     })
     AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    @Operation(summary = "User logout")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Logged out successfully")
+    })
+    void logout(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }
