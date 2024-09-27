@@ -1,6 +1,5 @@
 package ru.webapp.everylab.controller;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -11,7 +10,7 @@ import ru.webapp.everylab.dto.authentication.AuthenticationRequest;
 import ru.webapp.everylab.dto.authentication.AuthenticationResponse;
 import ru.webapp.everylab.dto.user.UserRequest;
 import ru.webapp.everylab.service.AuthenticationService;
-import ru.webapp.everylab.service.props.JwtProperties;
+import ru.webapp.everylab.service.CookieService;
 import ru.webapp.everylab.swagger.AuthenticationApi;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ import java.io.IOException;
 public class AuthenticationController implements AuthenticationApi {
 
     private final AuthenticationService authenticationService;
-    private final JwtProperties jwtProperties;
+    private final CookieService cookieService;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -31,13 +30,10 @@ public class AuthenticationController implements AuthenticationApi {
             @RequestBody @Valid UserRequest request,
             HttpServletResponse response
     ) {
-        String[] tokens = authenticationService.register(request);
-        Cookie cookie = createTokenCookie(tokens[1]);
-        response.addCookie(cookie);
-
-        return AuthenticationResponse.builder()
-                .accessToken(tokens[0])
-                .build();
+        return cookieService.createResponseWithTokens(
+                authenticationService.register(request),
+                response
+        );
     }
 
     @PostMapping("/login")
@@ -47,14 +43,10 @@ public class AuthenticationController implements AuthenticationApi {
             @RequestBody @Valid AuthenticationRequest authenticationRequest,
             HttpServletResponse response
     ) {
-        String[] tokens = authenticationService.authenticate(authenticationRequest);
-
-        Cookie cookie = createTokenCookie(tokens[1]);
-        response.addCookie(cookie);
-
-        return AuthenticationResponse.builder()
-                .accessToken(tokens[0])
-                .build();
+        return cookieService.createResponseWithTokens(
+                authenticationService.authenticate(authenticationRequest),
+                response
+        );
     }
 
     @PostMapping("/refresh-token")
@@ -64,22 +56,9 @@ public class AuthenticationController implements AuthenticationApi {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        String[] tokens = authenticationService.refreshToken(request, response);
-
-        Cookie cookie = createTokenCookie(tokens[1]);
-        response.addCookie(cookie);
-
-        return AuthenticationResponse.builder()
-                .accessToken(tokens[0])
-                .build();
-    }
-
-    private Cookie createTokenCookie(String value) {
-        Cookie cookie = new Cookie("token", value);
-
-        cookie.setMaxAge((int) (jwtProperties.getRefresh() / 1000));
-        cookie.setPath("/");
-
-        return cookie;
+        return cookieService.createResponseWithTokens(
+                authenticationService.refreshToken(request, response),
+                response
+        );
     }
 }

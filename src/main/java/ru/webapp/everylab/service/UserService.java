@@ -1,13 +1,15 @@
 package ru.webapp.everylab.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import ru.webapp.everylab.dto.user.UserRequest;
+import ru.webapp.everylab.dto.user.UserResponse;
 import ru.webapp.everylab.entity.user.User;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    User updateUser(UUID id, User user);
+    UserResponse updateUser(UUID id, UserRequest user);
     void deleteUser(UUID id);
-    User getUserById(UUID id);
-    List<User> getAllUsers();
+    UserResponse getUserById(HttpServletRequest request);
 }
