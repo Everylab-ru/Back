@@ -13,4 +13,6 @@ public interface AuthenticationService {
     String[] authenticate(AuthenticationRequest request);
 
     String[] refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    void logout(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

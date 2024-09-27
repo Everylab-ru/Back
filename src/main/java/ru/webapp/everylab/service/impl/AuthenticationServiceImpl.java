@@ -5,6 +5,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +19,12 @@ import ru.webapp.everylab.entity.user.User;
 import ru.webapp.everylab.entity.user.UserRole;
 import ru.webapp.everylab.entity.user.UserRoleId;
 import ru.webapp.everylab.exception.ResourceNotFoundException;
+import ru.webapp.everylab.exception.UnauthorizedException;
 import ru.webapp.everylab.repository.RoleRepository;
 import ru.webapp.everylab.repository.UserRepository;
 import ru.webapp.everylab.repository.UserRoleRepository;
 import ru.webapp.everylab.service.AuthenticationService;
+import ru.webapp.everylab.service.CookieService;
 import ru.webapp.everylab.service.JwtService;
 
 import java.io.IOException;
@@ -40,6 +43,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRoleRepository userRoleRepository;
     private final RoleRepository roleRepository;
     private final JwtService jwtService;
+    private final CookieService cookieService;
 
     public String[] register(UserRequest request) {
 
@@ -101,6 +105,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         return new String[] {newAccessToken, newRefreshToken};
+    }
+
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token;
+
+        if(authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+
+            String userID = jwtService.extractUserIdFromToken(token);
+            User user = findUserById(UUID.fromString(userID));
+            UserDetails userDetails = new SecurityUser(user);
+
+            if(jwtService.isTokenValid(token, userDetails)) {
+                Cookie cookie = cookieService.deleteCookie("token");
+                response.addCookie(cookie);
+            } else {
+                throw new UnauthorizedException(JWT_ERROR_MESSAGE);
+            }
+        } else {
+            throw new UnauthorizedException(AUTH_HEADER_ERROR_MESSAGE);
+        }
     }
 
     private User findUserByEmail(String email) {

@@ -61,4 +61,11 @@ public class AuthenticationController implements AuthenticationApi {
                 response
         );
     }
+
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        authenticationService.logout(request, response);
+    }
 }

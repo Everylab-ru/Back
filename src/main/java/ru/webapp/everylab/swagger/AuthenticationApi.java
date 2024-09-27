@@ -38,4 +38,10 @@ public interface AuthenticationApi {
             @ApiResponse(responseCode = "200", description = "Token refreshed successfully")
     })
     AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    @Operation(summary = "User logout")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Logged out successfully")
+    })
+    void logout(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

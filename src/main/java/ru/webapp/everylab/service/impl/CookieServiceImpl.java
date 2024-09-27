@@ -17,14 +17,23 @@ public class CookieServiceImpl implements CookieService {
     @Override
     public AuthenticationResponse createResponseWithTokens(String[] tokens, HttpServletResponse response) {
         Cookie cookie = new Cookie("token", tokens[1]);
-
         cookie.setMaxAge((int) (jwtProperties.getRefresh() / 1000));
         cookie.setPath("/");
-
         response.addCookie(cookie);
 
         return AuthenticationResponse.builder()
                 .accessToken(tokens[0])
                 .build();
+    }
+
+    @Override
+    public Cookie deleteCookie(String name) {
+        Cookie cookie = new Cookie(name, "");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+
+        return cookie;
     }
 }
