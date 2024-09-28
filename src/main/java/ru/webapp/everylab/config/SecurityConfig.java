@@ -51,7 +51,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://your-frontend-domain.com", "http://localhost:5173")); // Укажите здесь домен вашего фронтенда
+        configuration.setAllowedOrigins(Arrays.asList("https://everylab.store", "http://localhost:5173")); // Укажите здесь домен вашего фронтенда
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true); // Важно для установки withCredentials: true
