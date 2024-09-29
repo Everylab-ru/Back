@@ -20,6 +20,8 @@ public class CookieServiceImpl implements CookieService {
         cookie.setMaxAge((int) (jwtProperties.getRefresh() / 1000));
         cookie.setPath("/");
 
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         // Устанавливаем SameSite через метод setAttribute
         cookie.setAttribute("SameSite", "None");
 
