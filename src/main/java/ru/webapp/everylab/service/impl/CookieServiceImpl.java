@@ -21,7 +21,7 @@ public class CookieServiceImpl implements CookieService {
         cookie.setPath("/");
 
         // Устанавливаем SameSite через метод setAttribute
-        cookie.setAttribute("SameSite", "Strict");
+        cookie.setAttribute("SameSite", "None");
 
         response.addCookie(cookie);
 
