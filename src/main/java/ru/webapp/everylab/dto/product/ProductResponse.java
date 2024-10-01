@@ -1,9 +1,7 @@
 package ru.webapp.everylab.dto.product;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -25,7 +23,12 @@ public record ProductResponse(
         @Schema(description = "Product price", example = "15.90")
         BigDecimal price,
 
-        @NotBlank
-        ProductTypeDto productType
+        /*@NotBlank
+        ProductTypeDto productType*/
+
+        @NotNull
+        @Positive
+        @Schema(description = "productTypeId", example = "1")
+        Integer productTypeId
 ) {
 }
