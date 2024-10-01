@@ -3,9 +3,9 @@ package ru.webapp.everylab.entity.user;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
+import ru.webapp.everylab.entity.product.Product;
 import ru.webapp.everylab.entity.role.Role;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,5 +35,8 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<Product> products;
 }

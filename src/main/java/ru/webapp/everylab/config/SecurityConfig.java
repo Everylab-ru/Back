@@ -18,7 +18,6 @@ import ru.webapp.everylab.filter.JwtAuthenticationFilter;
 
 import java.util.Arrays;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -29,15 +28,21 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
+    private static final String[] PRODUCT_PUBLIC_ULR = {
+            "/api/v1/product",
+            "/api/v1/product/types",
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests( req -> req
+                .authorizeHttpRequests(req -> req
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/swagger-ui/**").permitAll()
                         .requestMatchers("/api/v1/docs/**").permitAll()
+                        .requestMatchers(PRODUCT_PUBLIC_ULR).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthenticationEntryPoint))
@@ -51,7 +56,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://everylab.store", "http://localhost:5173")); // Укажите здесь домен вашего фронтенда
+        configuration.setAllowedOrigins(Arrays.asList("https://everylab.store", "http://localhost:5173")); // домен вашего фронтенда
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true); // Важно для установки withCredentials: true
