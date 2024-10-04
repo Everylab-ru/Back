@@ -14,7 +14,7 @@ import ru.webapp.everylab.service.UserService;
 
 import java.util.UUID;
 
-import static ru.webapp.everylab.error.ErrorMessages.USER_NOT_FOUND_MESSAGE;
+import static ru.webapp.everylab.exception.ErrorMessages.USER_NOT_FOUND_MESSAGE;
 
 @Service
 @RequiredArgsConstructor

@@ -22,10 +22,6 @@ public record ProductRequest(
         @Schema(description = "Product price", example = "15.90")
         BigDecimal price,
 
-        /*@NotNull
-        @Valid
-        ProductTypeDto productType*/
-
         @NotNull
         @Positive
         @Schema(description = "productTypeId", example = "1")

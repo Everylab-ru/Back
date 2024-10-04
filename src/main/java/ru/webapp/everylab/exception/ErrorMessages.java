@@ -1,4 +1,4 @@
-package ru.webapp.everylab.error;
+package ru.webapp.everylab.exception;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

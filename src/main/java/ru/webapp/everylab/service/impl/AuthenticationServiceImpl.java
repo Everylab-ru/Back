@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static ru.webapp.everylab.entity.role.RoleName.USER;
-import static ru.webapp.everylab.error.ErrorMessages.*;
+import static ru.webapp.everylab.exception.ErrorMessages.*;
 
 @Service
 @RequiredArgsConstructor
