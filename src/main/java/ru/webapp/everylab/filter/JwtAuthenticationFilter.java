@@ -19,7 +19,7 @@ import ru.webapp.everylab.service.JwtService;
 
 import java.io.IOException;
 
-import static ru.webapp.everylab.error.ErrorMessages.JWT_ERROR_MESSAGE;
+import static ru.webapp.everylab.exception.ErrorMessages.JWT_ERROR_MESSAGE;
 
 @Component
 @RequiredArgsConstructor
