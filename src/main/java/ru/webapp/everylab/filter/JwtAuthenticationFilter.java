@@ -1,5 +1,6 @@
 package ru.webapp.everylab.filter;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -69,8 +70,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (JwtException e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, JWT_ERROR_MESSAGE);
-            return;
+            //response.sendError(HttpServletResponse.SC_UNAUTHORIZED, JWT_ERROR_MESSAGE);
+            //return;
+            throw new JwtException(JWT_ERROR_MESSAGE);
         }
 
         filterChain.doFilter(request, response);

@@ -18,6 +18,7 @@ import ru.webapp.everylab.entity.user.SecurityUser;
 import ru.webapp.everylab.entity.user.User;
 import ru.webapp.everylab.entity.user.UserRole;
 import ru.webapp.everylab.entity.user.UserRoleId;
+import ru.webapp.everylab.exception.DuplicateResourceException;
 import ru.webapp.everylab.exception.ResourceNotFoundException;
 import ru.webapp.everylab.exception.UnauthorizedException;
 import ru.webapp.everylab.repository.RoleRepository;
@@ -46,6 +47,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final CookieService cookieService;
 
     public String[] register(UserRequest request) {
+        checkUserExistence(request.email());
 
         UserDetails userDetails = buildUser(request);
         User savedUser = userRepository.save(((SecurityUser) userDetails).getUser());
@@ -100,8 +102,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 }
             }
         } catch (JwtException e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, JWT_ERROR_MESSAGE);
-            return null;
+            //response.sendError(HttpServletResponse.SC_UNAUTHORIZED, JWT_ERROR_MESSAGE);
+            //return null;
+            throw new JwtException(JWT_ERROR_MESSAGE);
         }
 
         return new String[] {newAccessToken, newRefreshToken};
@@ -127,6 +130,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
         } else {
             throw new UnauthorizedException(AUTH_HEADER_ERROR_MESSAGE);
+        }
+    }
+
+    private void checkUserExistence(String email) {
+        if(userRepository.existsByEmail(email)) {
+            throw new DuplicateResourceException(String.format(DUPLICATE_RESOURCE_MESSAGE, "User", "email"));
         }
     }
 
