@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import ru.webapp.everylab.dto.authentication.AuthenticationRequest;
 import ru.webapp.everylab.dto.authentication.AuthenticationResponse;
+import ru.webapp.everylab.dto.error.AppError;
 import ru.webapp.everylab.dto.user.UserRequest;
 
 import java.io.IOException;
@@ -21,15 +22,20 @@ public interface AuthenticationApi {
 
     @Operation(summary = "Register user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User registered successfully",
-                    content = @Content(schema = @Schema(implementation = AuthenticationResponse.class))),
+            @ApiResponse(responseCode = "201", description = "User registered successfully", content = @Content(schema = @Schema(implementation = AuthenticationResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "409", description = "User already exists"),
+            @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     AuthenticationResponse register(@RequestBody @Valid UserRequest request, HttpServletResponse response);
 
     @Operation(summary = "Authenticate user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User logged in successfully",
-                    content = @Content(schema = @Schema(implementation = AuthenticationResponse.class)))
+            @ApiResponse(responseCode = "200", description = "User logged in successfully", content = @Content(schema = @Schema(implementation = AuthenticationResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid input")
+
     })
     AuthenticationResponse authenticate(@RequestBody @Valid AuthenticationRequest authenticationRequest, HttpServletResponse response);
 
@@ -41,7 +47,8 @@ public interface AuthenticationApi {
 
     @Operation(summary = "User logout")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Logged out successfully")
+            @ApiResponse(responseCode = "200", description = "Logged out successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
     void logout(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

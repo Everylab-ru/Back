@@ -57,9 +57,10 @@ public class ProductServiceImpl implements ProductService {
 
     private Product createProduct(ProductRequest productRequest, String userId) {
         Product product = productMapper.toProduct(productRequest);
-        ProductType productType = new ProductType();
-        productType.setId(productRequest.productTypeId());
-        
+        ProductType productType = ProductType.builder()
+                .id(productRequest.productTypeId())
+                .build();
+
         product.setOwnerId(UUID.fromString(userId));
         product.setProductType(productType);
 
