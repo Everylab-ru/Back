@@ -1,6 +1,5 @@
 package ru.webapp.everylab.exception;
 
-import io.jsonwebtoken.JwtException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -42,19 +41,9 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler({UnauthorizedException.class})
+    @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public AppError handleUnauthorizedException(UnauthorizedException e) {
-        return AppError.builder()
-                .status(HttpStatus.UNAUTHORIZED.value())
-                .message(e.getMessage())
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    @ExceptionHandler(JwtException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public AppError handleJwtException(JwtException e) {
         return AppError.builder()
                 .status(HttpStatus.UNAUTHORIZED.value())
                 .message(e.getMessage())

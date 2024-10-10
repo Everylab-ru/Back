@@ -102,9 +102,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 }
             }
         } catch (JwtException e) {
-            //response.sendError(HttpServletResponse.SC_UNAUTHORIZED, JWT_ERROR_MESSAGE);
-            //return null;
-            throw new JwtException(JWT_ERROR_MESSAGE);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, JWT_ERROR_MESSAGE);
+            return null;
         }
 
         return new String[] {newAccessToken, newRefreshToken};
@@ -126,7 +125,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 Cookie cookie = cookieService.deleteCookie("token");
                 response.addCookie(cookie);
             } else {
-                throw new UnauthorizedException(JWT_ERROR_MESSAGE);
+                throw new UnauthorizedException(String.format(JWT_ERROR_MESSAGE, "access"));
             }
         } else {
             throw new UnauthorizedException(AUTH_HEADER_ERROR_MESSAGE);

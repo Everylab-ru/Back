@@ -11,6 +11,6 @@ public class ErrorMessages {
 
     public static final String DUPLICATE_RESOURCE_MESSAGE = "%s with this %s already exists";
 
-    public static final String JWT_ERROR_MESSAGE = "Invalid JWT token";
+    public static final String JWT_ERROR_MESSAGE = "Invalid JWT %s token";
     public static final String AUTH_HEADER_ERROR_MESSAGE = "Invalid authentication header";
 }
